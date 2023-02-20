@@ -69,9 +69,9 @@ class Solution
             count++;
             
         }
-        if( nn != NULL )
+        if( curr != NULL )
         {
-            head -> next = reverse(nn , k );
+            head -> next = reverse(curr , k );
         }
         return prev;
     }
