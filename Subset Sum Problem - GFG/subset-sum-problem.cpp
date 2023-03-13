@@ -6,41 +6,49 @@ using namespace std;
 
 // } Driver Code Ends
 //User function template for C++
-int r[101][100001];
+
 class Solution{   
 public:
-    
-    bool solve( vector<int>&arr , int sum , int size )
-    {
-        if( sum == 0 )
-        {
-            return true;
-        }
-        if( size == 0 )
-        {
-            return false;
-        }
 
-        if(r[size][sum] != -1)
+    
+    bool solve(int size, vector<int>arr , int sum)
+    {
+        bool dp[size+1][sum+1];
+        for(int i =0 ; i<size+1 ;i++ )
         {
-            return r[size][sum];
+            for(int j= 0; j<sum+1 ; j++ )
+            {
+                if(i==0 )
+                    dp[i][j] = false;
+                    
+                if(j==0)
+                    dp[i][j] = true;
+                    
+                else
+                    dp[i][j] = false; // handle the missing base case
+            }
+            
         }
-        if( arr[size-1] <= sum )
+        for(int i = 1; i<size+1 ; i++ )
         {
-            // include
-            return r[size][sum] = solve( arr , sum-arr[size-1] , size-1)||solve(arr,sum,size-1);
-        }
-        else
-        {
-            return r[size][sum] = solve(arr,sum,size-1);
+            for(int j= 1 ; j<sum+1 ; j++)
+            {
+                if(arr[i-1]<=j)
+                {
+                    dp[i][j] = dp[i-1][j-arr[i-1]] || dp[i-1][j];
+                }
+                else {
+                    dp[i][j]=dp[i-1][j];
+                    
+                }
+            }
         }
         
-        return r[size][sum];
+        return dp[size][sum];
     }
     bool isSubsetSum(vector<int>arr, int sum){
         int size = arr.size();
-        memset(r,-1,sizeof(r));
-        return solve( arr , sum , size );
+        return solve(size,arr,sum);
     }
 };
 
